@@ -17,7 +17,7 @@ import { PANEL_URI } from '../src/qoder/schemas.mjs';
 
 const exec = promisify(execFile), root = fileURLToPath(new URL('../', import.meta.url));
 const source = fileURLToPath(new URL('../src/qoder/adapter.mjs', import.meta.url));
-const version = '0.1.0-alpha.1';
+const version = JSON.parse(await readFile(join(root, 'qoder/.qoder-plugin/plugin.json'), 'utf8')).version;
 const cleanups = new WeakMap();
 before(async () => { await exec(process.execPath, ['scripts/build-qoder.mjs'], { cwd: root }); });
 async function fixture(t) {
@@ -33,12 +33,12 @@ const attempt = t => ({ taskId: t.id, attemptId: t.attempt.id, version: t.versio
 const claim = (call, started, sessionId) => call('taskflow_claim', { ...attempt(started.task), planSessionId: started.dispatch.planSessionId }, sessionId);
 const finish = (call, t, sessionId, extra = {}) => call('taskflow_complete', { ...attempt(t), status: 'completed', summary: '实际验证通过，产物 src/module.js', ...extra }, sessionId);
 
-test('Qoder：独立项目目录隔离，默认不使用 DSH，规范化项目路径', async t => {
+test('Qoder：独立项目目录隔离，规范化项目路径', async t => {
   const { dir } = await fixture(t); await mkdir(join(dir, 'a')); await mkdir(join(dir, 'b'));
   const base = join(dir, 'state');
   const a = await projectDirectory(join(dir, 'a'), base), b = await projectDirectory(join(dir, 'b'), base);
   assert.notEqual(a, b); assert.equal(a, await projectDirectory(join(dir, 'a', '.'), base));
-  assert.ok(a.startsWith(base)); assert.ok(!a.includes('.dsh'));
+  assert.ok(a.startsWith(base));
   assert.notEqual(await projectDirectory(join(dir, 'a'), '${QODER_PLUGIN_DATA}'), a);
 });
 
@@ -217,6 +217,7 @@ test('Qoder：ZIP 白名单、哈希、许可证与脱离源码的 MCP 握手/�
     await mkdir(dirname(join(installed, path)), { recursive: true }); await writeFile(join(installed, path), data);
   }
   const client = await connect(t, join(installed, 'runtime/server.cjs'), dir, join(dir, 'isolated-state'));
+  assert.equal(client.getServerVersion().version, version, 'Distributed MCP must advertise the release version');
   const invoke = client.callTool.bind(client);
   client.callTool = request => invoke({ ...request, arguments: { projectPath: dir, ...request.arguments } });
   const listing = await client.listTools(); assert.equal(listing.tools.length, 18);

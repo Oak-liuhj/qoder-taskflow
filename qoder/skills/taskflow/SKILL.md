@@ -31,6 +31,6 @@ parentId 仅表示组成关系；前后阶段通常是同级任务，用 depends
 
 进程重启不自动重跑事项。真实执行已经中断时，对该项 taskflow_pause，再 start；旧 attempt 随即失效，历史保留。不要暂停其他仍在工作的 Agent。
 
-taskflow_plan 成功后会直接返回可展示的 MCP Apps 任务清单，不需要再调用工具选择项目或计划。会话右侧“任务”入口自动绑定当前会话，已打开的面板会自动刷新。按需用 taskflow_panel 再次展示清单，仍传入 Hook 身份和项目路径；不支持 MCP Apps 时使用 status 的 JSON/文本。不要仅在聊天里写计划或只更新宿主临时 todo，任务清单以 Taskflow 账本为准。面板展示实际层级、状态、要求、执行记录和结果。文件、终端、浏览器预览沿用 Qoder 原生工具；本包没有 DSH 插槽和固定侧栏控制能力。
+taskflow_plan 成功后会直接返回可展示的 MCP Apps 任务清单，不需要再调用工具选择项目或计划。会话右侧“任务”入口自动绑定当前会话，已打开的面板会自动刷新。按需用 taskflow_panel 再次展示清单，仍传入 Hook 身份和项目路径；不支持 MCP Apps 时使用 status 的 JSON/文本。不要仅在聊天里写计划或只更新宿主临时 todo，任务清单以 Taskflow 账本为准。面板展示实际层级、状态、要求、执行记录和结果。文件、终端、浏览器预览沿用 Qoder 原生工具；固定聊天工具栏按钮与原生侧栏样式由宿主控制。
 
 创建成功不代表执行完成。父会话优先使用 supervise 回调接收完成、权限与提问事件，保留返回的 sessionId/sessionRef。疑似回调遗漏时用 wait_chat_sessions(timeoutMs:0) 只读检查，需要时用 read_chat_session 读取结果，用 send_message_to_chat_session 发送后续指令。不要持续轮询 supervise 会话。创建结果不确定时先查已有会话，不要重复创建。不得把 Taskflow 的 taskflow_wait 当成等待宿主会话结果的工具；它只释放账本并发名额。子会话先 complete 落盘，再返回。父会话读取 taskflow_status/taskflow_notifications 核对真实 executionSessionId 和最终状态，阅读后显式 ack 通知，不确认未读通知。插件不直接唤醒宿主，不代表宿主没有原生会话工具或通知能力；capabilities.plugin 仅描述插件自身集成，host 工具须在当前环境发现。

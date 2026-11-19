@@ -1,5 +1,5 @@
 import { build } from 'esbuild';
-import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, readdir, rm } from 'node:fs/promises';
 import { dirname, join, resolve, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
@@ -8,6 +8,9 @@ import { zipSync } from 'fflate';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const source = join(root, 'qoder'), out = join(root, 'dist', 'qoder-taskflow');
 const manifest = JSON.parse(await readFile(join(source, '.qoder-plugin/plugin.json'), 'utf8'));
+// Regenerate this build-owned directory so directory installs match the ZIP.
+if (resolve(out) !== resolve(root, 'dist', 'qoder-taskflow')) throw new Error('Invalid output directory');
+await rm(out, { recursive: true, force: true });
 await mkdir(join(out, 'runtime'), { recursive: true });
 const files = new Map();
 async function save(path, bytes) { const data = typeof bytes === 'string' ? Buffer.from(bytes) : bytes; files.set(path, data); await mkdir(dirname(join(out, path)), { recursive: true }); await writeFile(join(out, path), data); }
@@ -20,7 +23,7 @@ async function copyTree(folder) {
 }
 for (const folder of ['.qoder-plugin', 'skills', 'agents', 'commands', 'hooks']) await copyTree(folder);
 for (const name of ['.mcp.json', 'README.md']) await save(name, await readFile(join(source, name)));
-for (const name of ['LICENSE', 'NOTICE']) await save(name, await readFile(join(root, name)));
+for (const name of ['LICENSE', 'NOTICE', 'README_en.md', 'CHANGELOG.md']) await save(name, await readFile(join(root, name)));
 await save('assets/icon.png', await readFile(join(root, 'assets/icon.png')));
 const notices = new Map();
 async function collectLicenses(meta) {
@@ -58,4 +61,5 @@ const zipPath = join(root, 'dist', `qoder-taskflow-${manifest.version}.zip`);
 await writeFile(zipPath, zip);
 const report = { name: manifest.name, version: manifest.version, archive: relative(root, zipPath), sha256: createHash('sha256').update(zip).digest('hex'), bytes: zip.length, files: [...files].map(([path, data]) => ({ path, bytes: data.length, sha256: createHash('sha256').update(data).digest('hex') })), thirdPartyPackages: [...notices.keys()].sort() };
 await writeFile(join(root, 'dist/qoder-package-report.json'), JSON.stringify(report, null, 2));
+await writeFile(join(root, 'dist/SHA256SUMS.txt'), `${report.sha256}  qoder-taskflow-${manifest.version}.zip\n`);
 console.log(`Built ${report.archive}: ${files.size} files, ${zip.length} bytes, SHA256 ${report.sha256}`);

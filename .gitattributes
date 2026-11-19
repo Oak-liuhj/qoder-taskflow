@@ -3,6 +3,4 @@
 *.jpg binary
 *.jpeg binary
 *.webp binary
-*.tgz binary
-# Preserve the authoritative supplied prototype byte-for-byte.
-docs/prototype/*.html -text
+*.zip binary

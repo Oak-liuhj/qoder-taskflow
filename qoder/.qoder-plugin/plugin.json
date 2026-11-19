@@ -1,15 +1,26 @@
 {
   "name": "qoder-taskflow",
   "displayName": "Taskflow · 持久任务编排",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0",
   "description": "持久任务树、按需子任务委派、执行记录与结果交接",
-  "author": { "name": "Oak-liuhj" },
-  "repository": "https://github.com/Oak-liuhj/dsh-taskflow",
-  "homepage": "https://github.com/Oak-liuhj/dsh-taskflow/tree/codex/qoder-marketplace/qoder",
-  "license": "(Apache-2.0 AND MIT)",
-  "keywords": ["workflow", "taskflow", "task-tree", "subagents"],
+  "author": {
+    "name": "Oak-liuhj"
+  },
+  "repository": "https://github.com/Oak-liuhj/qoder-taskflow",
+  "homepage": "https://github.com/Oak-liuhj/qoder-taskflow#readme",
+  "license": "Apache-2.0",
+  "keywords": [
+    "qoder",
+    "qoder-plugin",
+    "taskflow",
+    "task-tree",
+    "workflow",
+    "subagents"
+  ],
   "skills": "./skills/",
-  "agents": ["./agents/taskflow-worker.md"],
+  "agents": [
+    "./agents/taskflow-worker.md"
+  ],
   "commands": "./commands/",
   "hooks": "./hooks/hooks.json",
   "mcpServers": "./.mcp.json"

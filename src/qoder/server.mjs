@@ -1,3 +1,4 @@
+import { VERSION } from './version.mjs';
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { CallToolRequestSchema, ListToolsRequestSchema, ListResourcesRequestSchema, ReadResourceRequestSchema } from '@modelcontextprotocol/sdk/types.js';
@@ -11,7 +12,7 @@ import { PANEL_URI, tools } from './schemas.mjs';
 async function main() {
 const validator = new AjvJsonSchemaValidator();
 const validators = new Map(tools.map(t => [t.name, validator.getValidator(t.inputSchema)]));
-const server = new Server({ name: 'qoder-taskflow', version: '0.1.0-alpha.1' }, {
+const server = new Server({ name: 'qoder-taskflow', version: VERSION }, {
   capabilities: { tools: {}, resources: {} },
   instructions: '使用 Hook 注入的真实 sessionId。已有计划通过增量操作维护，执行到该项才 start/claim。delegate 必须用原生 create_chat_session 创建可见聊天子会话，子会话以自己的 session_id 认领，不用内嵌 Agent 替代；发现宿主实际 schema 后调用。结果先持久化，再由父会话原生 wait/read 读取。taskflow_panel 提供 MCP Apps 任务树。',
 });

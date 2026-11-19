@@ -1,7 +1,0 @@
-{
-  "meta": {
-    "title": "dsh-taskflow",
-    "description": "Persistent task planning with selective nested sessions, incremental updates and direct-parent completion notifications.",
-    "detail": "README_en.md"
-  }
-}

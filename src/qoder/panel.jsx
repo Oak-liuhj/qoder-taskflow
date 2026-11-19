@@ -1,10 +1,11 @@
+import { VERSION } from './version.mjs';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App, applyHostStyleVariables } from '@modelcontextprotocol/ext-apps';
-import { MarkdownPreview } from '../client/components/markdown-preview.jsx';
+import { MarkdownPreview } from './markdown-preview.jsx';
 import './panel.css';
 
-const app = new App({ name: 'Taskflow', version: '0.1.0-alpha.1' }, {}, { autoResize: false });
+const app = new App({ name: 'Taskflow', version: VERSION }, {}, { autoResize: false });
 const labels = { pending: '待执行', queued: '待委派', running: '进行中', awaiting_children: '等待下级', completed: '已完成', blocked: '受阻', failed: '失败', paused: '已暂停', cancelled: '已取消' };
 const unpack = result => {
   if (result.isError) throw new Error(result.content?.find(c => c.type === 'text')?.text || '读取失败');

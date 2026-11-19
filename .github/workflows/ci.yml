@@ -1,4 +1,4 @@
-name: Validate plugin candidate
+name: Validate Qoder plugin
 on:
   push:
   pull_request:
@@ -16,21 +16,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 24.22.1
+          node-version: 24
           cache: npm
       - run: npm ci --ignore-scripts
       - run: npm run check
-      - run: npm run check:package
-      - run: npm run check:hosts
-      - run: npm run build:qoder
-      - run: npm run test:qoder
+      - run: git diff --check
       - uses: actions/upload-artifact@v4
         with:
-          name: dsh-taskflow-candidate-${{ matrix.os }}
+          name: qoder-taskflow-${{ matrix.os }}
           path: |
-            dist/*.tgz
             dist/SHA256SUMS.txt
-            dist/package-report.json
-            dist/host-report.json
             dist/qoder-taskflow-*.zip
             dist/qoder-package-report.json
+            dist/qoder-release-validation.json
