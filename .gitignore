@@ -1,0 +1,13 @@
+node_modules/
+.local/
+coverage/
+*.tgz
+.env
+.env.*
+!.env.example
+.idea/
+dist/
+
+.npmrc
+npm-debug.log*
+.DS_Store

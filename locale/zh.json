@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "dsh-taskflow",
+    "description": "智能任务编排插件：根据任务复杂度规划持久清单，按需委派多层子会话，完成后自动勾选并通知父任务。",
+    "detail": "README.md"
+  }
+}

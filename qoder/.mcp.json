@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "taskflow": {
+      "command": "node",
+      "args": ["${QODER_PLUGIN_ROOT}/runtime/server.cjs"],
+      "cwd": "${QODER_PLUGIN_ROOT}",
+      "env": { "TASKFLOW_QODER_DATA": "${QODER_PLUGIN_DATA}" },
+      "timeout": 30000
+    }
+  }
+}

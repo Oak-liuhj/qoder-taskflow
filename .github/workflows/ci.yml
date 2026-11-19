@@ -1,0 +1,36 @@
+name: Validate plugin candidate
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.22.1
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run check
+      - run: npm run check:package
+      - run: npm run check:hosts
+      - run: npm run build:qoder
+      - run: npm run test:qoder
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dsh-taskflow-candidate-${{ matrix.os }}
+          path: |
+            dist/*.tgz
+            dist/SHA256SUMS.txt
+            dist/package-report.json
+            dist/host-report.json
+            dist/qoder-taskflow-*.zip
+            dist/qoder-package-report.json

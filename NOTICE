@@ -1,0 +1,22 @@
+dsh-taskflow
+Copyright 2026 Oak-liuhj
+
+Original project code is licensed under Apache License 2.0; see LICENSE.
+
+The client UI styles, SVG icon paths and Fish mark are derived from the
+DeepSeek UI reference preserved in docs/prototype/dsh-taskflow-prd.html.
+Copyright (c) 2026 DeepSeek. These portions remain under the MIT License;
+the complete notice is in licenses/DeepSeek-MIT.txt and the client bundle.
+
+The repository-only prototype embeds Montserrat font software.
+Copyright 2024 The Montserrat.Git Project Authors
+https://github.com/JulietaUla/Montserrat.git
+Licensed under SIL Open Font License 1.1; see licenses/Montserrat-OFL.txt.
+The embedded font and prototype are excluded from the npm runtime package.
+
+This is a community plugin. Attribution does not imply endorsement.
+
+The client bundle includes the Marked Markdown lexer, licensed under MIT.
+Copyright (c) 2018+, MarkedJS (https://github.com/markedjs/)
+Copyright (c) 2011-2018, Christopher Jeffrey (https://github.com/chjj/)
+The complete upstream license is in licenses/Marked-MIT.txt.

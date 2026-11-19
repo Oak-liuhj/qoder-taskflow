@@ -1,0 +1,7 @@
+{
+  "hooks": {
+    "SessionStart": [{ "hooks": [{ "type": "command", "command": "node", "args": ["${QODER_PLUGIN_ROOT}/runtime/hook.cjs", "${QODER_PLUGIN_DATA}"], "timeout": 10 }] }],
+    "UserPromptSubmit": [{ "hooks": [{ "type": "command", "command": "node", "args": ["${QODER_PLUGIN_ROOT}/runtime/hook.cjs", "${QODER_PLUGIN_DATA}"], "timeout": 10 }] }],
+    "SubagentStart": [{ "hooks": [{ "type": "command", "command": "node", "args": ["${QODER_PLUGIN_ROOT}/runtime/hook.cjs", "${QODER_PLUGIN_DATA}"], "timeout": 10 }] }]
+  }
+}

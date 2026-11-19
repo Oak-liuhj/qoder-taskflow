@@ -1,0 +1,8 @@
+- insert:
+    - id: taskflow
+      name: dsh-taskflow
+      config:
+        maxDepth: 2
+        maxConcurrent: 2
+        maxTasks: 200
+        autoPlan: true
